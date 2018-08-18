@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: site-health
+  labels:
+    purpose: to-check-the-availibilty-of-websites
+spec:
+  containers:
+  - name: site-health-container
+    image: harshvkarn/site-health:v2
+    env:
+    - name: channel
+      value: "health-status"
+    - name: url
+      value: "https://openebs.io"
+    - name: token
+      valueFrom:
+        secretKeyRef:
+          name: tokens
+          key: token

@@ -1,6 +1,10 @@
 ## Running
 
 To run this script:
-- export SLACK_API_TOKEN=xoxp-<SLACK TOKEN HERE>
-- run python script
- `python check.py -u <https://url/>`
+- Create Kubernetes secret
+`kubectl create secret generic tokens --from-literal=token=<your-slack-token-here>` 
+
+- Apply the health-check YAML
+`kubectl apply -f site-check.yml`
+
+ 

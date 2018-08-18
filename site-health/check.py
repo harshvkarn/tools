@@ -20,13 +20,15 @@ import re
 import multiprocessing
 from slackclient import SlackClient
 
-slack_token = os.environ["SLACK_API_TOKEN"]
-sc = SlackClient(slack_token)
+# slack_token = os.environ["SLACK_API_TOKEN"]
+# sc = SlackClient(slack_token)
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', '--url', help='URL of site to check', required=True)
 parser.add_argument('-c', '--channel', help='Channel to post', required=True)
+parser.add_argument('-t', '--token', help='Slack Token to authenticate', required=True)
 args = parser.parse_args()
 channelName = '#'+args.channel
+sc = SlackClient(args.token)
 print channelName
 #Notify: That call slack's API
 def notify(status):
@@ -39,8 +41,8 @@ def notify(status):
 	  icon_url="http://www.pngmart.com/files/1/Cartoon-Bee-PNG.png"
 	)
 
-def mAlive():
-	msg = "I am fine! Don't Worry! :relaxed:"
+def mAlive(url):
+	msg = "I am fine! Don't Worry! :relaxed:\n Sent From: " + str(url)
 	sc.api_call(
 	  "chat.postMessage",
 	  channel=channelName,
@@ -65,5 +67,5 @@ if __name__ == '__main__':
 	p = multiprocessing.Process(target=mainFunc, name="main")
 	p.start()
 	while True:
-		mAlive()
+		mAlive(args.url)
 		time.sleep(3600)
